@@ -10,13 +10,6 @@ class App extends Component {
     return (
       <Router>
         <div>
-          <section className="hero is-link">
-            <div className="hero-body">
-              <div className="container">
-                <h1 className="title">Lunreddit</h1>
-              </div>
-            </div>
-          </section>
           <Route exact path="/" component={Home} />
           <Route path="/user/:username" component={UserView}/>
         </div>

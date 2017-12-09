@@ -27,29 +27,38 @@ class UserView extends Component {
   render() {
     const { posts, about } = this.state
     return (
-      <section className="section">
-        <div className="container">
-          <Link
-            to="/"
-            className="back-nav-link"
-          >&larr; Select a user</Link>
-          <h2 className="subtitle">
-            {this.username}
-            {about ? (
-              <span className="text-gray">
-                <span> &middot; </span>
-                {about.linkKarma} link karma
+      <div>
+        <section className="hero is-link">
+          <div className="hero-body">
+            <div className="container">
+              <h1 className="title">
+                <Link to="/">Lunreddit</Link>
                 <span> / </span>
-                {about.commentKarma} comment karma
-                <span> &middot; </span>
-                Redditor for {new DateHelper(about.created).timeSince()}
-              </span>
-            ) : ''}
-          </h2>
-          <KarmaChart posts={posts} />
-          <PostsList posts={posts} />
-        </div>
-      </section>
+                <Link to={`/user/${this.username}`}>{this.username}</Link>
+              </h1>
+              {about ? (
+                <h2 className="subtitle">
+                  {about.linkKarma} link karma
+                  <span> &middot; </span>
+                  {about.commentKarma} comment karma
+                  <span> &middot; </span>
+                  Redditor for {new DateHelper(about.created).timeSince()}
+                </h2>
+              ) : ''}
+            </div>
+          </div>
+        </section>
+        <section className="section">
+          <div className="container">
+            <Link
+              to="/"
+              className="back-nav-link"
+            >&larr; Select a user</Link>
+            <KarmaChart posts={posts} />
+            <PostsList posts={posts} />
+          </div>
+        </section>
+      </div>
     )
   }
 }
