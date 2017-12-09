@@ -7,6 +7,17 @@ class RedditUser extends Fetcher {
     this.username = username
   }
 
+  async about() {
+    const path = `/user/${this.username}/about.json`
+    const resp = await this.get(path)
+    const data = resp.data
+    return {
+      created: new Date(data.created * 1000),
+      linkKarma: data.link_karma,
+      commentKarma: data.comment_karma
+    }
+  }
+
   async posts(opts) {
     opts = opts || {}
     const limit = opts.limit || 10
