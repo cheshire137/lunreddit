@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { withRouter, Link } from 'react-router-dom'
 import RedditUser from '../models/RedditUser'
 import PostsList from './PostsList'
+import KarmaChart from './KarmaChart'
 
 class UserView extends Component {
   state = { posts: [] }
@@ -19,6 +20,7 @@ class UserView extends Component {
   }
 
   render() {
+    const { posts } = this.state
     return (
       <section className="section">
         <div className="container">
@@ -27,7 +29,8 @@ class UserView extends Component {
             className="back-nav-link"
           >&larr; Select a user</Link>
           <h2 className="subtitle">{this.username}</h2>
-          <PostsList posts={this.state.posts} />
+          <KarmaChart posts={posts} />
+          <PostsList posts={posts} />
         </div>
       </section>
     )

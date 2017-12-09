@@ -1,10 +1,6 @@
 import React, { Component } from 'react'
-import ExternalLink from './ExternalLink'
 import PostDetails from './PostDetails'
-
-const monthNames = ['January', 'February', 'March', 'April', 'May',
-                    'June', 'July', 'August', 'September', 'October',
-                    'November', 'December']
+import DateHelper from '../models/DateHelper'
 
 class PostsList extends Component {
   render() {
@@ -12,10 +8,11 @@ class PostsList extends Component {
     return (
       <ul>
         {this.props.posts.map(post => {
-          const curMonth = post.month
-          const isSameMonth = prevMonth && curMonth.getTime() === prevMonth.getTime()
+          const dateHelper = new DateHelper(post.date)
+          const curMonth = dateHelper.month()
+          const isSameMonth = dateHelper.isSameMonth(prevMonth)
           prevMonth = curMonth
-          const monthTitle = `${monthNames[curMonth.getMonth()]} ${curMonth.getFullYear()}`
+          const monthTitle = dateHelper.monthLabel()
           return (
             <li key={post.key} className="reddit-post-list-item">
               {isSameMonth ? '' : (

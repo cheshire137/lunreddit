@@ -38,7 +38,7 @@ export default class Fetcher {
     if (body) {
       data.body = JSON.stringify(body)
     }
-    return fetch(url, data).then(Fetcher.checkStatus).
-      then(Fetcher.parseJson)
+    return fetch(url, data).then(Fetcher.checkStatus)
+                           .then(Fetcher.parseJson)
   }
 }
