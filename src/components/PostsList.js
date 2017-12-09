@@ -6,12 +6,25 @@ class PostsList extends Component {
     return (
       <ul>
         {this.props.posts.map(post => (
-          <li key={post.key}>
-            <p><ExternalLink url={post.url}>{post.title}</ExternalLink></p>
-            <div className="is-size-7">
-              <ExternalLink url={post.subredditUrl}>{post.subreddit}</ExternalLink>
+          <li key={post.key} className="reddit-post-list-item">
+            <p>
+              <ExternalLink
+                url={post.url}
+                className="reddit-post-link"
+              >{post.title}</ExternalLink>
+            </p>
+            <div className="is-size-7 text-gray">
+              <ExternalLink
+                url={post.url}
+                className="text-gray"
+              >{post.date.toLocaleDateString()}</ExternalLink>
               <span> &middot; </span>
-              {post.date.toLocaleDateString()}
+              <strong>{post.points}</strong> {post.pointsUnit}
+              <span> &middot; </span>
+              <ExternalLink
+                url={post.subredditUrl}
+                className="text-gray"
+              >{post.subreddit}</ExternalLink>
             </div>
           </li>
         ))}

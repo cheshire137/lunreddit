@@ -1,0 +1,17 @@
+.reddit-post-list-item + .reddit-post-list-item {
+  margin-top: 1em;
+}
+
+.text-gray {
+  color: #777;
+}
+
+.reddit-post-link {
+  font-weight: 700;
+}
+
+.back-nav-link {
+  display: block;
+  margin-bottom: 2rem;
+  font-size: 0.9rem;
+}

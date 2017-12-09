@@ -7,5 +7,7 @@ export default class RedditPost {
     this.subreddit = `/${data.subreddit_name_prefixed}`
     this.subredditUrl = `https://www.reddit.com/${data.subreddit_name_prefixed}`
     this.date = new Date(data.created * 1000)
+    this.points = data.score
+    this.pointsUnit = this.points === 1 ? 'point' : 'points'
   }
 }
