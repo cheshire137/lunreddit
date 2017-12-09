@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { BarChart, XAxis, YAxis, Bar } from 'recharts'
+import { BarChart, XAxis, YAxis, Bar, Tooltip } from 'recharts'
 import DateHelper from '../models/DateHelper'
 
 const getChartData = (posts) => {
@@ -28,10 +28,11 @@ class KarmaChart extends Component {
   render() {
     const data = getChartData(this.props.posts)
     return (
-      <BarChart width={600} height={300} data={data}>
+      <BarChart width={800} height={280} data={data}>
         <XAxis dataKey="label" />
         <YAxis />
-        <Bar dataKey="points" fill="#8884d8" />
+        <Tooltip />
+        <Bar name="Karma" dataKey="points" fill="#8884d8" />
       </BarChart>
     )
   }

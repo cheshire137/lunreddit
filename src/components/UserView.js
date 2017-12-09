@@ -14,7 +14,7 @@ class UserView extends Component {
   }
 
   componentDidMount() {
-    this.redditUser.posts().then(posts => {
+    this.redditUser.annualPosts(2017).then(posts => {
       this.setState(prevState => ({ posts }))
     })
   }
