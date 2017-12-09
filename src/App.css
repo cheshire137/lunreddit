@@ -2,6 +2,10 @@
   margin-top: 1em;
 }
 
+.reddit-post-list-item + .reddit-post-list-item .month-header {
+  margin-top: 2rem;
+}
+
 .text-gray {
   color: #777;
 }
@@ -14,4 +18,9 @@
   display: block;
   margin-bottom: 2rem;
   font-size: 0.9rem;
+}
+
+.month-header {
+  border-top: 1px solid #dbdbdb;
+  padding-top: 0.75rem;
 }
