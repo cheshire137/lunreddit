@@ -54,6 +54,7 @@ class UserView extends Component {
               to="/"
               className="back-nav-link"
             >&larr; Select a user</Link>
+            <h2 className="subtitle">{this.year} on Reddit</h2>
             <KarmaChart posts={posts} year={this.year} />
             <PostsList posts={posts} />
           </div>
