@@ -68,6 +68,10 @@ class UserView extends Component {
               <span title={totalLinkKarma}>
                 {NumberHelper.format(totalLinkKarma)} link karma
               </span>
+              <span> &middot; </span>
+              <span title={posts.length}>
+                {NumberHelper.format(posts.length)} posts
+              </span>
             </h2>
             <KarmaChart posts={posts} year={this.year} />
             <PostsList posts={posts} />
