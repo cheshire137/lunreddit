@@ -4,6 +4,7 @@ import RedditUser from '../models/RedditUser'
 import PostsList from './PostsList'
 import ExternalLink from './ExternalLink'
 import KarmaChart from './KarmaChart'
+import UserSummary from './UserSummary'
 import DateHelper from '../models/DateHelper'
 import NumberHelper from '../models/NumberHelper'
 
@@ -12,23 +13,45 @@ class UserView extends Component {
 
   constructor(props) {
     super(props)
-    this.username = props.match.params.username
-    this.year = props.match.params.year || new Date().getFullYear()
+    const params = props.match.params
+    this.username = params.username
+    this.year = parseInt(params.year, 10)
     this.redditUser = new RedditUser(this.username)
   }
 
+  componentWillReceiveProps(props) {
+    const params = props.match.params
+    this.username = params.username
+    this.year = parseInt(params.year, 10)
+    this.redditUser = new RedditUser(this.username)
+    this.loadAnnualPosts()
+  }
+
   componentDidMount() {
-    this.redditUser.about().then(about => {
-      this.setState(prevState => ({ about }))
-    })
-    this.redditUser.annualPosts(this.year).then(posts => {
-      this.setState(prevState => ({ posts }))
-    })
+    this.redditUser.about().then(about => this.onAboutLoaded(about))
+    this.loadAnnualPosts()
+  }
+
+  loadAnnualPosts() {
+    this.redditUser.annualPosts({ year: this.year }).then(posts => this.onPostsLoaded(posts))
+  }
+
+  onAboutLoaded(about) {
+    this.setState(prevState => ({ about }))
+  }
+
+  onPostsLoaded(posts) {
+    this.setState(prevState => ({ posts }))
   }
 
   render() {
     const { posts, about } = this.state
     const totalLinkKarma = posts.map(post => post.points).reduce((acc, val) => acc + val, 0)
+    const prevYear = this.year - 1
+    const showPrevYear = about && about.years.indexOf(prevYear) > -1
+    const nextYear = this.year + 1
+    const showNextYear = about && about.years.indexOf(nextYear) > -1
+
     return (
       <div>
         <section className="hero is-link">
@@ -39,30 +62,36 @@ class UserView extends Component {
                 <span> / </span>
                 <Link to={`/user/${this.username}`}>{this.username}</Link>
               </h1>
-              {about ? (
-                <h2 className="subtitle">
-                  <span title={about.linkKarma}>
-                    {NumberHelper.format(about.linkKarma)} link karma
-                  </span>
-                  <span> &middot; </span>
-                  <span title={about.commentKarma}>
-                    {NumberHelper.format(about.commentKarma)} comment karma
-                  </span>
-                  <span> &middot; </span>
-                  <ExternalLink url={this.redditUser.url}>
-                    Redditor for {new DateHelper(about.created).timeSince()}
-                  </ExternalLink>
-                </h2>
-              ) : ''}
+              {about ? <UserSummary {...about} username={this.username} /> : ''}
             </div>
           </div>
         </section>
         <section className="section">
           <div className="container">
-            <Link
-              to="/"
-              className="back-nav-link"
-            >&larr; Select a user</Link>
+            <nav className="tabs is-boxed">
+              <ul>
+                <li>
+                  <Link
+                    to="/"
+                    className="back-nav-link"
+                  >&larr; Select a user</Link>
+                </li>
+                {showPrevYear ? (
+                  <li>
+                    <Link
+                      to={`/user/${this.username}/year/${prevYear}`}
+                    >{prevYear}</Link>
+                  </li>
+                ) : ''}
+                {showNextYear ? (
+                  <li>
+                    <Link
+                      to={`/user/${this.username}/year/${nextYear}`}
+                    >{nextYear}</Link>
+                  </li>
+                ) : ''}
+              </ul>
+            </nav>
             <h2 className="subtitle">
               <span>{this.year} on Reddit: </span>
               <span title={totalLinkKarma}>
@@ -73,8 +102,12 @@ class UserView extends Component {
                 {NumberHelper.format(posts.length)} posts
               </span>
             </h2>
-            <KarmaChart posts={posts} year={this.year} />
-            <PostsList posts={posts} />
+            {posts.length > 0 ? (
+              <div>
+                <KarmaChart posts={posts} year={this.year} />
+                <PostsList posts={posts} />
+              </div>
+            ) : ''}
           </div>
         </section>
       </div>
