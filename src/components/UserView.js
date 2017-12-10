@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { withRouter, Link } from 'react-router-dom'
 import RedditUser from '../models/RedditUser'
 import PostsList from './PostsList'
+import ExternalLink from './ExternalLink'
 import KarmaChart from './KarmaChart'
 import DateHelper from '../models/DateHelper'
 import NumberHelper from '../models/NumberHelper'
@@ -48,7 +49,9 @@ class UserView extends Component {
                     {NumberHelper.format(about.commentKarma)} comment karma
                   </span>
                   <span> &middot; </span>
-                  Redditor for {new DateHelper(about.created).timeSince()}
+                  <ExternalLink url={this.redditUser.url}>
+                    Redditor for {new DateHelper(about.created).timeSince()}
+                  </ExternalLink>
                 </h2>
               ) : ''}
             </div>

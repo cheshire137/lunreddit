@@ -5,6 +5,7 @@ class RedditUser extends Fetcher {
   constructor(username) {
     super('https://www.reddit.com')
     this.username = username
+    this.url = `https://www.reddit.com/u/${this.username}`
   }
 
   async about() {
