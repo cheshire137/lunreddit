@@ -51,6 +51,10 @@ export default class DateHelper {
     return DateHelper.month(this.date)
   }
 
+  monthName() {
+    return monthNames[this.date.getMonth()]
+  }
+
   isSameMonth(date2) {
     if (!this.date && date2 || this.date && !date2) {
       return false
@@ -64,6 +68,6 @@ export default class DateHelper {
   }
 
   monthLabel() {
-    return `${monthNames[this.date.getMonth()]} ${this.date.getFullYear()}`
+    return `${this.monthName()} ${this.date.getFullYear()}`
   }
 }
