@@ -6,7 +6,12 @@ class UserForm extends Component {
 
   onSubmit(event) {
     event.preventDefault()
-    this.props.history.push(`/user/${this.state.user}`)
+    if (this.state.user.trim().length < 1) {
+      return
+    }
+
+    const year = new Date().getFullYear()
+    this.props.history.push(`/user/${this.state.user}/year/${year}`)
   }
 
   onUserChange(event) {
