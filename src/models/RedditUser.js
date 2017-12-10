@@ -41,8 +41,16 @@ class RedditUser extends Fetcher {
     const startCutoff = new Date(year, 0, 1).getTime() / 1000
     const endCutoff = new Date(year, 11, 31, 23, 59, 59).getTime() / 1000
 
-    const path = `/user/${this.username}/submitted.json?sort=new&t=year&limit=100`
+    let path = `/user/${this.username}/submitted.json?sort=new&t=year&limit=100`
+    if (opts.before) {
+      path = `${path}&before=${opts.before}`
+    }
+    if (opts.after) {
+      path = `${path}&after=${opts.after}`
+    }
     const resp = await this.get(path)
+    console.log(path)
+    console.log(year, resp.data.children.map(child => new Date(child.data.created * 1000).getFullYear()))
 
     const yearPosts = resp.data.children.filter(child => {
       const post = child.data

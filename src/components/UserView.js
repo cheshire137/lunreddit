@@ -4,36 +4,46 @@ import RedditUser from '../models/RedditUser'
 import PostsList from './PostsList'
 import ExternalLink from './ExternalLink'
 import KarmaChart from './KarmaChart'
-import UserSummary from './UserSummary'
 import DateHelper from '../models/DateHelper'
 import NumberHelper from '../models/NumberHelper'
+import UserHeader from './UserHeader'
 
 class UserView extends Component {
-  state = { posts: [] }
+  state = { posts: null }
 
   constructor(props) {
     super(props)
-    const params = props.match.params
-    this.username = params.username
-    this.year = parseInt(params.year, 10)
-    this.redditUser = new RedditUser(this.username)
+    this.gotProps(props)
   }
 
   componentWillReceiveProps(props) {
-    const params = props.match.params
-    this.username = params.username
-    this.year = parseInt(params.year, 10)
-    this.redditUser = new RedditUser(this.username)
-    this.loadAnnualPosts()
+    this.gotProps(props)
+    this.loadAnnualPosts(props)
   }
 
   componentDidMount() {
     this.redditUser.about().then(about => this.onAboutLoaded(about))
-    this.loadAnnualPosts()
+    this.loadAnnualPosts(this.props)
   }
 
-  loadAnnualPosts() {
-    this.redditUser.annualPosts({ year: this.year }).then(posts => this.onPostsLoaded(posts))
+  gotProps(props) {
+    const params = props.match.params
+    this.username = params.username
+    this.year = parseInt(params.year, 10)
+    this.redditUser = new RedditUser(this.username)
+  }
+
+  loadAnnualPosts(props) {
+    const opts = { year: this.year }
+    const params = props.match.params
+    if (params.before) {
+      opts.before = params.before
+    }
+    if (params.after) {
+      opts.after = params.after
+    }
+    this.redditUser.annualPosts(opts)
+                   .then(posts => this.onPostsLoaded(posts))
   }
 
   onAboutLoaded(about) {
@@ -46,26 +56,33 @@ class UserView extends Component {
 
   render() {
     const { posts, about } = this.state
+    if (!posts) {
+      return <p>Loading...</p>
+    }
+    if (posts.length < 1) {
+      return (
+        <div>
+          <UserHeader username={this.username} about={about} />
+          <section className="section">
+            <div className="container">
+              <p>No posts in {this.year}</p>
+            </div>
+          </section>
+        </div>
+      )
+    }
+
     const totalLinkKarma = posts.map(post => post.points).reduce((acc, val) => acc + val, 0)
     const prevYear = this.year - 1
     const showPrevYear = about && about.years.indexOf(prevYear) > -1
     const nextYear = this.year + 1
     const showNextYear = about && about.years.indexOf(nextYear) > -1
+    const earliestFullname = posts[posts.length - 1].fullname
+    const latestFullname = posts[0].fullname
 
     return (
       <div>
-        <section className="hero is-link">
-          <div className="hero-body">
-            <div className="container">
-              <h1 className="title">
-                <Link to="/">Lunreddit</Link>
-                <span> / </span>
-                <Link to={`/user/${this.username}`}>{this.username}</Link>
-              </h1>
-              {about ? <UserSummary {...about} username={this.username} /> : ''}
-            </div>
-          </div>
-        </section>
+        <UserHeader username={this.username} about={about} />
         <section className="section">
           <div className="container">
             <nav className="tabs is-boxed">
@@ -79,14 +96,14 @@ class UserView extends Component {
                 {showPrevYear ? (
                   <li>
                     <Link
-                      to={`/user/${this.username}/year/${prevYear}`}
+                      to={`/user/${this.username}/before/${earliestFullname}/year/${prevYear}`}
                     >{prevYear}</Link>
                   </li>
                 ) : ''}
                 {showNextYear ? (
                   <li>
                     <Link
-                      to={`/user/${this.username}/year/${nextYear}`}
+                      to={`/user/${this.username}/after/${latestFullname}/year/${nextYear}`}
                     >{nextYear}</Link>
                   </li>
                 ) : ''}

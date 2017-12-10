@@ -11,6 +11,8 @@ class App extends Component {
       <Router>
         <div>
           <Route exact path="/" component={Home} />
+          <Route path="/user/:username/after/:after/year/:year" component={UserView} />
+          <Route path="/user/:username/before/:before/year/:year" component={UserView} />
           <Route path="/user/:username/year/:year" component={UserView} />
         </div>
       </Router>
