@@ -7,6 +7,10 @@ export default class DateHelper {
     return new Date(date.getFullYear(), date.getMonth(), 1)
   }
 
+  static monthNames() {
+    return monthNames
+  }
+
   constructor(date) {
     this.date = date
   }
