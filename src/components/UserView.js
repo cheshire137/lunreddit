@@ -4,6 +4,7 @@ import RedditUser from '../models/RedditUser'
 import PostsList from './PostsList'
 import KarmaChart from './KarmaChart'
 import DateHelper from '../models/DateHelper'
+import NumberHelper from '../models/NumberHelper'
 
 class UserView extends Component {
   state = { posts: [] }
@@ -26,6 +27,7 @@ class UserView extends Component {
 
   render() {
     const { posts, about } = this.state
+    const totalLinkKarma = posts.map(post => post.points).reduce((acc, val) => acc + val, 0)
     return (
       <div>
         <section className="hero is-link">
@@ -38,9 +40,13 @@ class UserView extends Component {
               </h1>
               {about ? (
                 <h2 className="subtitle">
-                  {about.linkKarma} link karma
+                  <span title={about.linkKarma}>
+                    {NumberHelper.format(about.linkKarma)} link karma
+                  </span>
                   <span> &middot; </span>
-                  {about.commentKarma} comment karma
+                  <span title={about.commentKarma}>
+                    {NumberHelper.format(about.commentKarma)} comment karma
+                  </span>
                   <span> &middot; </span>
                   Redditor for {new DateHelper(about.created).timeSince()}
                 </h2>
@@ -54,7 +60,12 @@ class UserView extends Component {
               to="/"
               className="back-nav-link"
             >&larr; Select a user</Link>
-            <h2 className="subtitle">{this.year} on Reddit</h2>
+            <h2 className="subtitle">
+              <span>{this.year} on Reddit: </span>
+              <span title={totalLinkKarma}>
+                {NumberHelper.format(totalLinkKarma)} link karma
+              </span>
+            </h2>
             <KarmaChart posts={posts} year={this.year} />
             <PostsList posts={posts} />
           </div>

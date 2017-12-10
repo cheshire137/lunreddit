@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import ExternalLink from './ExternalLink'
+import NumberHelper from '../models/NumberHelper'
 
 class PostDetails extends Component {
   render() {
@@ -18,7 +19,9 @@ class PostDetails extends Component {
             className="text-gray"
           >{post.date.toLocaleDateString()}</ExternalLink>
           <span> &middot; </span>
-          <strong>{post.points}</strong> {post.pointsUnit}
+          <span title={post.points}>
+            <strong>{NumberHelper.format(post.points)}</strong> {post.pointsUnit}
+          </span>
           <span> &middot; </span>
           <ExternalLink
             url={post.subredditUrl}
