@@ -9,7 +9,7 @@ import NumberHelper from '../models/NumberHelper'
 import UserHeader from './UserHeader'
 
 class UserView extends Component {
-  state = { posts: null }
+  state = { postsByYear: null }
 
   constructor(props) {
     super(props)
@@ -42,30 +42,43 @@ class UserView extends Component {
     if (params.after) {
       opts.after = params.after
     }
-    this.redditUser.annualPosts(opts)
-                   .then(posts => this.onPostsLoaded(posts))
+    if (params.count) {
+      opts.count = parseInt(params.count, 10)
+    }
+    this.redditUser.annualPosts(opts).then(data => this.onPostsLoaded(data))
   }
 
   onAboutLoaded(about) {
     this.setState(prevState => ({ about }))
   }
 
-  onPostsLoaded(posts) {
-    this.setState(prevState => ({ posts }))
+  onPostsLoaded(data) {
+    const postsByYear = {}
+    for (const post of data.posts) {
+      const year = post.date.getFullYear()
+      if (!(year in postsByYear)) {
+        postsByYear[year] = []
+      }
+      postsByYear[year].push(post)
+    }
+    this.setState(prevState => ({
+      postsByYear, after: data.after, before: data.before, count: data.count
+    }))
   }
 
   render() {
-    const { posts, about } = this.state
-    if (!posts) {
+    const { postsByYear, about, count, before, after } = this.state
+    if (!postsByYear) {
       return <p>Loading...</p>
     }
-    if (posts.length < 1) {
+    const years = Object.keys(postsByYear)
+    if (years.length < 1) {
       return (
         <div>
           <UserHeader username={this.username} about={about} />
           <section className="section">
             <div className="container">
-              <p>No posts in {this.year}</p>
+              <p>No posts found</p>
             </div>
           </section>
         </div>
@@ -77,8 +90,14 @@ class UserView extends Component {
     const showPrevYear = about && about.years.indexOf(prevYear) > -1
     const nextYear = this.year + 1
     const showNextYear = about && about.years.indexOf(nextYear) > -1
-    const earliestFullname = posts[posts.length - 1].fullname
-    const latestFullname = posts[0].fullname
+    let pageChunk = ''
+    if (before) {
+      pageChunk = `before/${before}/`
+    } else if (after) {
+      pageChunk = `after/${after}/`
+    }
+    const prevYearUrl = `/user/${this.username}/${pageChunk}${count}/year/${prevYear}`
+    const nextYearUrl = `/user/${this.username}/${pageChunk}${count}/year/${nextYear}`
 
     return (
       <div>
@@ -95,16 +114,12 @@ class UserView extends Component {
                 </li>
                 {showPrevYear ? (
                   <li>
-                    <Link
-                      to={`/user/${this.username}/before/${earliestFullname}/year/${prevYear}`}
-                    >{prevYear}</Link>
+                    <Link to={prevYearUrl}>{prevYear}</Link>
                   </li>
                 ) : ''}
                 {showNextYear ? (
                   <li>
-                    <Link
-                      to={`/user/${this.username}/after/${latestFullname}/year/${nextYear}`}
-                    >{nextYear}</Link>
+                    <Link to={nextYearUrl}>{nextYear}</Link>
                   </li>
                 ) : ''}
               </ul>

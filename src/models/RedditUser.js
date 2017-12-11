@@ -33,30 +33,30 @@ class RedditUser extends Fetcher {
 
   async annualPosts(opts) {
     opts = opts || {}
-    const year = opts.year
-    if (typeof year !== 'number' || isNaN(year)) {
-      return []
-    }
+    const limit = 100
 
-    const startCutoff = new Date(year, 0, 1).getTime() / 1000
-    const endCutoff = new Date(year, 11, 31, 23, 59, 59).getTime() / 1000
-
-    let path = `/user/${this.username}/submitted.json?sort=new&t=year&limit=100`
+    let path = `/user/${this.username}/submitted.json?sort=new&t=year&limit=${limit}`
     if (opts.before) {
       path = `${path}&before=${opts.before}`
     }
     if (opts.after) {
       path = `${path}&after=${opts.after}`
     }
+    let count = 0
+    if (opts.count) {
+      count += opts.count
+      path = `${path}&count=${count}`
+    }
+    count += limit
     const resp = await this.get(path)
-    console.log(path)
-    console.log(year, resp.data.children.map(child => new Date(child.data.created * 1000).getFullYear()))
+    const { before, after } = resp.data
 
-    const yearPosts = resp.data.children.filter(child => {
-      const post = child.data
-      return post.created >= startCutoff && post.created <= endCutoff
-    })
-    return yearPosts.map(child => new RedditPost(child))
+    return {
+      posts: resp.data.children.map(child => new RedditPost(child)),
+      after,
+      before,
+      count
+    }
   }
 }
 
