@@ -5,7 +5,7 @@
   "dependencies": {
     "bulma": "^0.6.1",
     "node-sass-chokidar": "^0.0.3",
-    "primer": "^10.2.0",
+    "primer-core": "^6.6.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-router-dom": "^4.2.2",

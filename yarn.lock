@@ -5234,7 +5234,7 @@ primer-buttons@2.5.2:
   dependencies:
     primer-support "4.5.1"
 
-primer-core@6.6.1:
+primer-core@6.6.1, primer-core@^6.6.1:
   version "6.6.1"
   resolved "https://registry.yarnpkg.com/primer-core/-/primer-core-6.6.1.tgz#76a94648e160eda379114fe6f540dd9749b0d604"
   dependencies:
