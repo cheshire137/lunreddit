@@ -15,7 +15,7 @@ export default class RedditPost {
       const url = new URL(this.linkUrl)
       const pathParts = url.pathname.split('/')
       const gfycatName = pathParts[pathParts.length - 1]
-      this.thumbnailUrl = `https://thumbs.gfycat.com/${gfycatName}-mobile.jpg`
+      this.thumbnailUrl = `https://thumbs.gfycat.com/${gfycatName}-size_restricted.gif`
     }
   }
 }

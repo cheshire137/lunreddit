@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "bulma": "^0.6.1",
+    "node-sass-chokidar": "^0.0.3",
+    "primer": "^10.2.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-router-dom": "^4.2.2",
@@ -11,6 +13,8 @@
     "recharts": "^1.0.0-beta.6"
   },
   "scripts": {
+    "build-css": "node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/",
+    "watch-css": "npm run build-css && node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/ --watch --recursive",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",

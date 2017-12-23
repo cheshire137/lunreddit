@@ -8,36 +8,39 @@ class PostDetails extends Component {
     const { url, title, points, subreddit, subredditUrl, linkUrl, thumbnailUrl,
             date, pointsUnit } = post
     return (
-      <div>
+      <div className="d-flex">
         {thumbnailUrl ? (
           <ExternalLink
             url={linkUrl}
+            className="mr-3 reddit-post-thumbnail-link d-block"
           >
             <img
               src={thumbnailUrl}
             />
           </ExternalLink>
         ) : ''}
-        <p>
-          <ExternalLink
-            url={url}
-            className="reddit-post-link"
-          >{title}</ExternalLink>
-        </p>
-        <div className="is-size-7 text-gray">
-          <ExternalLink
-            url={url}
-            className="text-gray"
-          >{date.toLocaleDateString()}</ExternalLink>
-          <span> &middot; </span>
-          <span title={points}>
-            <strong>{NumberHelper.format(points)}</strong> {pointsUnit}
-          </span>
-          <span> &middot; </span>
-          <ExternalLink
-            url={subredditUrl}
-            className="text-gray"
-          >{subreddit}</ExternalLink>
+        <div>
+          <p>
+            <ExternalLink
+              url={url}
+              className="reddit-post-link"
+            >{title}</ExternalLink>
+          </p>
+          <div className="is-size-7 text-gray">
+            <ExternalLink
+              url={url}
+              className="text-gray"
+            >{date.toLocaleDateString()}</ExternalLink>
+            <span> &middot; </span>
+            <span title={points}>
+              <strong>{NumberHelper.format(points)}</strong> {pointsUnit}
+            </span>
+            <span> &middot; </span>
+            <ExternalLink
+              url={subredditUrl}
+              className="text-gray"
+            >{subreddit}</ExternalLink>
+          </div>
         </div>
       </div>
     )
