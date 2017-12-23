@@ -12,7 +12,7 @@ class YearSummary extends Component {
         </span>
         <span> &middot; </span>
         <span title={postCount}>
-          {NumberHelper.format(postCount)} posts
+          {NumberHelper.format(postCount)} post{postCount === 1 ? '' : 's'}
         </span>
       </h2>
     )
