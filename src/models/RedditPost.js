@@ -10,5 +10,12 @@ export default class RedditPost {
     this.points = data.score
     this.pointsUnit = this.points === 1 ? 'point' : 'points'
     this.fullname = `${child.kind}_${data.id}`
+    this.linkUrl = data.url
+    if (this.linkUrl && this.linkUrl.indexOf('gfycat.com') > -1) {
+      const url = new URL(this.linkUrl)
+      const pathParts = url.pathname.split('/')
+      const gfycatName = pathParts[pathParts.length - 1]
+      this.thumbnailUrl = `https://thumbs.gfycat.com/${gfycatName}-mobile.jpg`
+    }
   }
 }

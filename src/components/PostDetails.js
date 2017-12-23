@@ -5,28 +5,39 @@ import NumberHelper from '../models/NumberHelper'
 class PostDetails extends Component {
   render() {
     const { post } = this.props
+    const { url, title, points, subreddit, subredditUrl, linkUrl, thumbnailUrl,
+            date, pointsUnit } = post
     return (
       <div>
+        {thumbnailUrl ? (
+          <ExternalLink
+            url={linkUrl}
+          >
+            <img
+              src={thumbnailUrl}
+            />
+          </ExternalLink>
+        ) : ''}
         <p>
           <ExternalLink
-            url={post.url}
+            url={url}
             className="reddit-post-link"
-          >{post.title}</ExternalLink>
+          >{title}</ExternalLink>
         </p>
         <div className="is-size-7 text-gray">
           <ExternalLink
-            url={post.url}
+            url={url}
             className="text-gray"
-          >{post.date.toLocaleDateString()}</ExternalLink>
+          >{date.toLocaleDateString()}</ExternalLink>
           <span> &middot; </span>
-          <span title={post.points}>
-            <strong>{NumberHelper.format(post.points)}</strong> {post.pointsUnit}
+          <span title={points}>
+            <strong>{NumberHelper.format(points)}</strong> {pointsUnit}
           </span>
           <span> &middot; </span>
           <ExternalLink
-            url={post.subredditUrl}
+            url={subredditUrl}
             className="text-gray"
-          >{post.subreddit}</ExternalLink>
+          >{subreddit}</ExternalLink>
         </div>
       </div>
     )
