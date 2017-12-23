@@ -76,6 +76,16 @@ class UserView extends Component {
     }))
   }
 
+  yearsToShow() {
+    const { postsByYear } = this.state
+    const years = Object.keys(postsByYear).reverse()
+    if (years.length < 2) {
+      return years
+    }
+    // Don't show last year, it might be partially fetched
+    return years.slice(0, years.length - 1)
+  }
+
   render() {
     const { postsByYear, about, count, before, after, linkKarmaByYear } = this.state
     if (!postsByYear) {
@@ -91,7 +101,7 @@ class UserView extends Component {
       )
     }
 
-    const years = Object.keys(postsByYear).reverse()
+    const years = this.yearsToShow()
     if (years.length < 1) {
       return (
         <div>
