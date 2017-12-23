@@ -22,7 +22,7 @@ class PostsList extends Component {
     return (
       <div>
         {months.map(month => (
-          <div key={month}>
+          <div key={month} className="month-container">
             <h3 className="month-header subtitle">
               {month} ({postsByMonth[month].length})
             </h3>

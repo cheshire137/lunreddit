@@ -126,7 +126,7 @@ class UserView extends Component {
               const linkKarma = linkKarmaByYear[year]
 
               return (
-                <div key={year}>
+                <div key={year} className="year-container">
                   <YearSummary
                     postCount={posts.length}
                     year={year}
