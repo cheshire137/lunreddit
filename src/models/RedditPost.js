@@ -8,6 +8,8 @@ export default class RedditPost {
     this.subredditUrl = `https://www.reddit.com/${data.subreddit_name_prefixed}`
     this.date = new Date(data.created * 1000)
     this.points = data.score
+    this.domain = data.domain
+    this.domainUrl = `https://www.reddit.com/domain/${this.domain}/`
     this.pointsUnit = this.points === 1 ? 'point' : 'points'
     this.fullname = `${child.kind}_${data.id}`
     this.linkUrl = data.url

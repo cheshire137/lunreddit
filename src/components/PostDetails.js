@@ -6,7 +6,7 @@ class PostDetails extends Component {
   render() {
     const { post } = this.props
     const { url, title, points, subreddit, subredditUrl, linkUrl, thumbnailUrl,
-            date, pointsUnit } = post
+            date, pointsUnit, domain, domainUrl } = post
     return (
       <div className="d-flex">
         {thumbnailUrl ? (
@@ -22,7 +22,7 @@ class PostDetails extends Component {
         <div>
           <p>
             <ExternalLink
-              url={url}
+              url={linkUrl ? linkUrl : url}
               className="reddit-post-link"
             >{title}</ExternalLink>
           </p>
@@ -40,6 +40,20 @@ class PostDetails extends Component {
               url={subredditUrl}
               className="text-gray"
             >{subreddit}</ExternalLink>
+            <span> &middot; </span>
+            <ExternalLink
+              url={domainUrl}
+              className="text-gray"
+            >{domain}</ExternalLink>
+            {linkUrl ? (
+              <span>
+                <span> &middot; </span>
+                <ExternalLink
+                  url={url}
+                  className="text-gray"
+                >View comments</ExternalLink>
+              </span>
+            ) : ''}
           </div>
         </div>
       </div>
