@@ -29,12 +29,11 @@ class UserView extends Component {
   gotProps(props) {
     const params = props.match.params
     this.username = params.username
-    this.year = parseInt(params.year, 10)
     this.redditUser = new RedditUser(this.username)
   }
 
   loadAnnualPosts(props) {
-    const opts = { year: this.year }
+    const opts = {}
     const params = props.match.params
     if (params.before) {
       opts.before = params.before
@@ -79,10 +78,19 @@ class UserView extends Component {
   render() {
     const { postsByYear, about, count, before, after, linkKarmaByYear } = this.state
     if (!postsByYear) {
-      return <p>Loading...</p>
+      return (
+        <div>
+          <UserHeader username={this.username} />
+          <section className="section">
+            <div className="container">
+              <p>Loading...</p>
+            </div>
+          </section>
+        </div>
+      )
     }
 
-    const years = Object.keys(postsByYear)
+    const years = Object.keys(postsByYear).reverse()
     if (years.length < 1) {
       return (
         <div>

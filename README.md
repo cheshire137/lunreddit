@@ -1,5 +1,7 @@
 # Lunreddit
 
+View your Reddit karma and posts by year.
+
 ## How to Develop
 
 ```bash
