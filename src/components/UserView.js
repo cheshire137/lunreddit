@@ -9,7 +9,7 @@ import NumberHelper from '../models/NumberHelper'
 import UserHeader from './UserHeader'
 
 class UserView extends Component {
-  state = { postsByYear: null }
+  state = { postsByYear: null, linkKarmaByYear: {} }
 
   constructor(props) {
     super(props)
@@ -54,23 +54,34 @@ class UserView extends Component {
 
   onPostsLoaded(data) {
     const postsByYear = {}
+    const linkKarmaByYear = {}
+
     for (const post of data.posts) {
       const year = post.date.getFullYear()
+
       if (!(year in postsByYear)) {
         postsByYear[year] = []
       }
+      if (!(year in linkKarmaByYear)) {
+        linkKarmaByYear[year] = 0
+      }
+
       postsByYear[year].push(post)
+      linkKarmaByYear[year] += post.points
     }
+
     this.setState(prevState => ({
-      postsByYear, after: data.after, before: data.before, count: data.count
+      postsByYear, after: data.after, before: data.before, count: data.count,
+      linkKarmaByYear
     }))
   }
 
   render() {
-    const { postsByYear, about, count, before, after } = this.state
+    const { postsByYear, about, count, before, after, linkKarmaByYear } = this.state
     if (!postsByYear) {
       return <p>Loading...</p>
     }
+
     const years = Object.keys(postsByYear)
     if (years.length < 1) {
       return (
@@ -85,20 +96,6 @@ class UserView extends Component {
       )
     }
 
-    const totalLinkKarma = posts.map(post => post.points).reduce((acc, val) => acc + val, 0)
-    const prevYear = this.year - 1
-    const showPrevYear = about && about.years.indexOf(prevYear) > -1
-    const nextYear = this.year + 1
-    const showNextYear = about && about.years.indexOf(nextYear) > -1
-    let pageChunk = ''
-    if (before) {
-      pageChunk = `before/${before}/`
-    } else if (after) {
-      pageChunk = `after/${after}/`
-    }
-    const prevYearUrl = `/user/${this.username}/${pageChunk}${count}/year/${prevYear}`
-    const nextYearUrl = `/user/${this.username}/${pageChunk}${count}/year/${nextYear}`
-
     return (
       <div>
         <UserHeader username={this.username} about={about} />
@@ -112,34 +109,34 @@ class UserView extends Component {
                     className="back-nav-link"
                   >&larr; Select a user</Link>
                 </li>
-                {showPrevYear ? (
-                  <li>
-                    <Link to={prevYearUrl}>{prevYear}</Link>
-                  </li>
-                ) : ''}
-                {showNextYear ? (
-                  <li>
-                    <Link to={nextYearUrl}>{nextYear}</Link>
-                  </li>
-                ) : ''}
               </ul>
             </nav>
-            <h2 className="subtitle">
-              <span>{this.year} on Reddit: </span>
-              <span title={totalLinkKarma}>
-                {NumberHelper.format(totalLinkKarma)} link karma
-              </span>
-              <span> &middot; </span>
-              <span title={posts.length}>
-                {NumberHelper.format(posts.length)} posts
-              </span>
-            </h2>
-            {posts.length > 0 ? (
-              <div>
-                <KarmaChart posts={posts} year={this.year} />
-                <PostsList posts={posts} />
-              </div>
-            ) : ''}
+
+            {years.map(year => {
+              const posts = postsByYear[year]
+              const linkKarma = linkKarmaByYear[year]
+
+              return (
+                <div key={year}>
+                  <h2 className="subtitle">
+                  <span>{year} on Reddit: </span>
+                  <span title={linkKarma}>
+                    {NumberHelper.format(linkKarma)} link karma
+                  </span>
+                  <span> &middot; </span>
+                  <span title={posts.length}>
+                    {NumberHelper.format(posts.length)} posts
+                  </span>
+                </h2>
+                {posts.length > 0 ? (
+                  <div>
+                    <KarmaChart posts={posts} year={year} />
+                    <PostsList posts={posts} />
+                  </div>
+                ) : ''}
+                </div>
+              )
+            })}
           </div>
         </section>
       </div>
