@@ -7,6 +7,7 @@ import KarmaChart from './KarmaChart'
 import DateHelper from '../models/DateHelper'
 import NumberHelper from '../models/NumberHelper'
 import UserHeader from './UserHeader'
+import YearSummary from './YearSummary'
 
 class UserView extends Component {
   state = { postsByYear: null, linkKarmaByYear: {} }
@@ -126,22 +127,17 @@ class UserView extends Component {
 
               return (
                 <div key={year}>
-                  <h2 className="subtitle">
-                  <span>{year} on Reddit: </span>
-                  <span title={linkKarma}>
-                    {NumberHelper.format(linkKarma)} link karma
-                  </span>
-                  <span> &middot; </span>
-                  <span title={posts.length}>
-                    {NumberHelper.format(posts.length)} posts
-                  </span>
-                </h2>
-                {posts.length > 0 ? (
-                  <div>
-                    <KarmaChart posts={posts} year={year} />
-                    <PostsList posts={posts} />
-                  </div>
-                ) : ''}
+                  <YearSummary
+                    postCount={posts.length}
+                    year={year}
+                    linkKarma={linkKarma}
+                  />
+                  {posts.length > 0 ? (
+                    <div>
+                      <KarmaChart posts={posts} year={year} />
+                      <PostsList posts={posts} />
+                    </div>
+                  ) : ''}
                 </div>
               )
             })}
