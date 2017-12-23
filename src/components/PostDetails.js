@@ -40,11 +40,15 @@ class PostDetails extends Component {
               url={subredditUrl}
               className="text-gray"
             >{subreddit}</ExternalLink>
-            <span> &middot; </span>
-            <ExternalLink
-              url={domainUrl}
-              className="text-gray"
-            >{domain}</ExternalLink>
+            {domainUrl ? (
+              <span>
+                <span> &middot; </span>
+                <ExternalLink
+                  url={domainUrl}
+                  className="text-gray"
+                >{domain}</ExternalLink>
+              </span>
+            ) : ''}
             {linkUrl ? (
               <span>
                 <span> &middot; </span>
