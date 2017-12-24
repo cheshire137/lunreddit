@@ -7,16 +7,19 @@ class PostDetails extends Component {
     const { post } = this.props
     const { url, title, points, subreddit, subredditUrl, linkUrl, thumbnailUrl,
             date, pointsUnit, domain, domainUrl } = post
+    const thumbnailStyle = {
+      backgroundImage: thumbnailUrl ? `url("${thumbnailUrl}")` : ''
+    }
+
     return (
       <div className="d-flex">
         {thumbnailUrl ? (
           <ExternalLink
             url={linkUrl}
-            className="mr-3 reddit-post-thumbnail-link d-block"
+            style={thumbnailStyle}
+            className="mr-3 reddit-post-thumbnail-link d-block flex-shrink-0"
           >
-            <img
-              src={thumbnailUrl}
-            />
+            <img src={thumbnailUrl} alt={title} />
           </ExternalLink>
         ) : ''}
         <div>

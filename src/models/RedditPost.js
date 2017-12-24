@@ -1,6 +1,26 @@
 export default class RedditPost {
+  static getThumbnailUrl(data) {
+    if (data.url && data.url.indexOf('gfycat.com') > -1) {
+      const url = new URL(data.url)
+      const pathParts = url.pathname.split('/')
+      const gfycatName = pathParts[pathParts.length - 1]
+      return `https://thumbs.gfycat.com/${gfycatName}-size_restricted.gif`
+    }
+
+    if (data.preview && data.preview.images) {
+      const images = data.preview.images[0].resolutions
+      const image = images.filter(img => img.width > 200)[0]
+      if (image) {
+        return image.url.replace(/&amp;/g, '&')
+      }
+    }
+
+    return null
+  }
+
   constructor(child) {
     const data = child.data
+    console.log(data)
     this.url = `https://www.reddit.com${data.permalink}`
     this.title = data.title
     this.key = data.id
@@ -15,11 +35,6 @@ export default class RedditPost {
     this.pointsUnit = this.points === 1 ? 'point' : 'points'
     this.fullname = `${child.kind}_${data.id}`
     this.linkUrl = data.url
-    if (this.linkUrl && this.linkUrl.indexOf('gfycat.com') > -1) {
-      const url = new URL(this.linkUrl)
-      const pathParts = url.pathname.split('/')
-      const gfycatName = pathParts[pathParts.length - 1]
-      this.thumbnailUrl = `https://thumbs.gfycat.com/${gfycatName}-size_restricted.gif`
-    }
+    this.thumbnailUrl = RedditPost.getThumbnailUrl(data)
   }
 }

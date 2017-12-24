@@ -36,5 +36,13 @@
 }
 
 .reddit-post-thumbnail-link {
-  max-width: 250px;
+  width: 230px;
+  height: 150px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+
+  img {
+    visibility: hidden;
+  }
 }
