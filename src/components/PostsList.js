@@ -3,9 +3,13 @@ import PostDetails from './PostDetails'
 import NumberHelper from '../models/NumberHelper'
 import DateHelper from '../models/DateHelper'
 
-const getPostsByMonth = (posts) => {
+const getPostsByMonth = (posts, subreddit) => {
   const result = {}
-  for (const post of posts) {
+  let filteredPosts = posts
+  if (subreddit) {
+    filteredPosts = filteredPosts.filter(p => p.subreddit === subreddit)
+  }
+  for (const post of filteredPosts) {
     const dateHelper = new DateHelper(post.date)
     const month = dateHelper.monthName()
     if (!(month in result)) {
@@ -18,7 +22,8 @@ const getPostsByMonth = (posts) => {
 
 class PostsList extends Component {
   render() {
-    const postsByMonth = getPostsByMonth(this.props.posts)
+    const { posts, subreddit } = this.props
+    const postsByMonth = getPostsByMonth(posts, subreddit)
     const months = Object.keys(postsByMonth)
 
     return (

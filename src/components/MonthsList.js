@@ -5,8 +5,15 @@ import PostsList from './PostsList'
 import KarmaBreakdown from './KarmaBreakdown'
 
 class MonthsList extends Component {
+  state = { subreddit: null }
+
+  onSubredditChange(subreddit) {
+    this.setState(prevState => ({ subreddit }))
+  }
+
   render() {
     const { posts, year, linkKarma } = this.props
+    const { subreddit } = this.state
 
     return (
       <div>
@@ -18,10 +25,15 @@ class MonthsList extends Component {
         <KarmaChart posts={posts} year={year} />
         <div className="columns">
           <div className="column is-three-quarters">
-            <PostsList posts={posts} />
+            <PostsList posts={posts} subreddit={subreddit} />
           </div>
           <div className="column">
-            <KarmaBreakdown posts={posts} year={year} />
+            <KarmaBreakdown
+              posts={posts}
+              year={year}
+              activeSubreddit={subreddit}
+              onSubredditChange={s => this.onSubredditChange(s)}
+            />
           </div>
         </div>
       </div>

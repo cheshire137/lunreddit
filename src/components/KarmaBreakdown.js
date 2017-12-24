@@ -27,8 +27,17 @@ const sortedSubreddits = (linkKarmaBySubreddit) => {
 }
 
 class KarmaBreakdown extends Component {
+  onSubredditClick(subreddit) {
+    const { onSubredditChange, activeSubreddit } = this.props
+    if (activeSubreddit === subreddit) {
+      onSubredditChange(null)
+    } else {
+      onSubredditChange(subreddit)
+    }
+  }
+
   render() {
-    const { posts, year } = this.props
+    const { posts, year, activeSubreddit } = this.props
     const linkKarmaBySubreddit = getLinkKarmaBySubreddit(posts)
     const subreddits = sortedSubreddits(linkKarmaBySubreddit)
 
@@ -39,15 +48,24 @@ class KarmaBreakdown extends Component {
           {subreddits.map(subreddit => {
             const points = linkKarmaBySubreddit[subreddit]
             const pointsUnit = points === 1 ? 'point' : 'points'
+            const isActive = activeSubreddit === subreddit
+            const className = (isActive ? 'is-info' : 'is-white') + ' button'
 
             return (
               <li key={subreddit}>
-                <ExternalLink
-                  url={`https://www.reddit.com${subreddit}`}
-                >{subreddit} </ExternalLink>
-                <span title={points}>
-                  <strong>{NumberHelper.format(points)}</strong>&nbsp;{pointsUnit}
-                </span>
+                <button
+                  type="button"
+                  className={className}
+                  onClick={() => this.onSubredditClick(subreddit)}
+                >
+                  <span>{subreddit}</span>
+                  <span title={points} className="pl-2">
+                    <strong>{NumberHelper.format(points)}</strong>&nbsp;{pointsUnit}
+                  </span>
+                  {isActive ? (
+                    <span className="text-bold pl-2">&times;</span>
+                  ) : ''}
+                </button>
               </li>
             )
           })}

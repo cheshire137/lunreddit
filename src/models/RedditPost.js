@@ -20,7 +20,6 @@ export default class RedditPost {
 
   constructor(child) {
     const data = child.data
-    console.log(data)
     this.url = `https://www.reddit.com${data.permalink}`
     this.title = data.title
     this.key = data.id
