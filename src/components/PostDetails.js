@@ -6,7 +6,7 @@ class PostDetails extends Component {
   render() {
     const { post } = this.props
     const { url, title, points, subreddit, subredditUrl, linkUrl, thumbnailUrl,
-            date, pointsUnit, domain, domainUrl } = post
+            date, pointsUnit, domain, domainUrl, comments, commentsUnit } = post
     const thumbnailStyle = {
       backgroundImage: thumbnailUrl ? `url("${thumbnailUrl}")` : ''
     }
@@ -38,6 +38,14 @@ class PostDetails extends Component {
             <span title={points}>
               <strong>{NumberHelper.format(points)}</strong> {pointsUnit}
             </span>
+            <span> &middot; </span>
+            <ExternalLink
+              url={url}
+              className="text-gray"
+              title={comments}
+            >
+              <strong>{NumberHelper.format(comments)}</strong> {commentsUnit}
+            </ExternalLink>
             <span> &middot; </span>
             <ExternalLink
               url={subredditUrl}

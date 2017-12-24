@@ -24,6 +24,8 @@ export default class RedditPost {
     this.url = `https://www.reddit.com${data.permalink}`
     this.title = data.title
     this.key = data.id
+    this.comments = data.num_comments
+    this.commentsUnit = this.comments === 1 ? 'comment' : 'comments'
     this.subreddit = `/${data.subreddit_name_prefixed}`
     this.subredditUrl = `https://www.reddit.com/${data.subreddit_name_prefixed}`
     this.date = new Date(data.created * 1000)

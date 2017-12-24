@@ -4,6 +4,7 @@ import NumberHelper from '../models/NumberHelper'
 class YearSummary extends Component {
   render() {
     const { year, linkKarma, postCount } = this.props
+
     return (
       <h2 className="subtitle">
         <span>{year} on Reddit: </span>

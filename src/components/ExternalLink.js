@@ -7,6 +7,7 @@ class ExternalLink extends Component {
         href={this.props.url}
         className={this.props.className}
         style={this.props.style}
+        title={this.props.title}
         target="_blank"
         rel="noopener noreferrer"
       >{this.props.children}</a>
