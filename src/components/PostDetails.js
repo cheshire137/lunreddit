@@ -60,15 +60,6 @@ class PostDetails extends Component {
                 >{domain}</ExternalLink>
               </span>
             ) : ''}
-            {linkUrl ? (
-              <span>
-                <span> &middot; </span>
-                <ExternalLink
-                  url={url}
-                  className="text-gray"
-                >View comments</ExternalLink>
-              </span>
-            ) : ''}
           </div>
         </div>
       </div>
