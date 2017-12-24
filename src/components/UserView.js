@@ -1,13 +1,11 @@
 import React, { Component } from 'react'
 import { withRouter, Link } from 'react-router-dom'
 import RedditUser from '../models/RedditUser'
-import PostsList from './PostsList'
 import ExternalLink from './ExternalLink'
-import KarmaChart from './KarmaChart'
 import DateHelper from '../models/DateHelper'
 import NumberHelper from '../models/NumberHelper'
 import UserHeader from './UserHeader'
-import YearSummary from './YearSummary'
+import MonthsList from './MonthsList'
 
 class UserView extends Component {
   state = { postsByYear: null, linkKarmaByYear: {} }
@@ -137,17 +135,11 @@ class UserView extends Component {
 
               return (
                 <div key={year} className="year-container">
-                  <YearSummary
-                    postCount={posts.length}
+                  <MonthsList
+                    posts={posts}
                     year={year}
                     linkKarma={linkKarma}
                   />
-                  {posts.length > 0 ? (
-                    <div>
-                      <KarmaChart posts={posts} year={year} />
-                      <PostsList posts={posts} />
-                    </div>
-                  ) : ''}
                 </div>
               )
             })}
