@@ -15,5 +15,6 @@ open http://localhost:3000/
 
 ```bash
 heroku git:remote -a your-heroku-app
+heroku buildpacks:add https://github.com/mars/create-react-app-buildpack.git
 git push heroku master
 ```
