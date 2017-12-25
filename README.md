@@ -2,6 +2,8 @@
 
 View your Reddit karma and posts by year.
 
+![Screenshot](https://raw.githubusercontent.com/cheshire137/lunreddit/master/screenshot.png)
+
 ## How to Develop
 
 ```bash
